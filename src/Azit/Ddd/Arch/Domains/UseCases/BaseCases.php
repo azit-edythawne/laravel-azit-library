@@ -5,7 +5,6 @@ namespace Azit\Ddd\Arch\Domains\UseCases;
 use Azit\Ddd\Arch\Constant\ValueConstant;
 use Azit\Ddd\Arch\Domains\Builder\FilterCreateBuilder;
 use Azit\Ddd\Arch\Domains\Response\BaseResponse;
-use Azit\Ddd\Arch\Domains\UseCases\Entity\AuthEntity;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
