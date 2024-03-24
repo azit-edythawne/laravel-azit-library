@@ -80,6 +80,7 @@ abstract class BaseCases {
     }
 
     /**
+     * @deprecated
      * Retorna la respuesta
      * @param string $message
      * @param mixed $data
@@ -88,6 +89,14 @@ abstract class BaseCases {
     protected function setResponse(string $message, mixed $data) : BaseResponse {
         $this -> resource -> setData($data);
         $this -> resource -> setMessage($message);
+        return $this -> resource;
+    }
+
+    /**
+     * Obtiene la respuesta
+     * @return BaseResponse
+     */
+    protected function getResponse() : BaseResponse {
         return $this -> resource;
     }
 
