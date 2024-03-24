@@ -5,6 +5,7 @@ namespace Azit\Ddd\Arch\Domains\UseCases;
 use Azit\Ddd\Arch\Constant\ValueConstant;
 use Azit\Ddd\Arch\Domains\Builder\FilterCreateBuilder;
 use Azit\Ddd\Arch\Domains\Response\BaseResponse;
+use Azit\Ddd\Arch\Domains\UseCases\Entity\AuthEntity;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
@@ -14,21 +15,17 @@ use Illuminate\Support\Str;
 abstract class BaseCases {
 
     private ?string $url;
-    private ?array $user;
     protected ?array $attributes;
     private BaseResponse $resource;
-    private ?UserRequireCallback $userCallback;
 
     /**
      * Constructor
      * Permite un objecto response opcional
      * Permite un user callback para obtener el usuario logeado
      * @param BaseResponse|null $object
-     * @param UserRequireCallback|null $callback
      */
-    public function __construct(?BaseResponse $object, ?UserRequireCallback $callback) {
+    public function __construct(?BaseResponse $object) {
         $this -> initResponse($object);
-        $this -> userCallback = $callback;
     }
 
     /**
@@ -36,7 +33,7 @@ abstract class BaseCases {
      * @param BaseResponse|null $object
      * @return void
      */
-    private function initResponse(?BaseResponse $object) {
+    private function initResponse(?BaseResponse $object) : void {
         if (isset($object)) {
             $this -> resource = $object;
         }
@@ -54,11 +51,6 @@ abstract class BaseCases {
     public function setRequest(Request $args) : void {
         $this -> setAttributes($args -> all());
         $this -> url = $args -> url();
-
-        // Se requiere informacion del usuario autenticado
-        if (isset($this -> userCallback)) {
-            $this -> user = $this -> userCallback -> extractUserByRequest($args);
-        }
     }
 
     /**

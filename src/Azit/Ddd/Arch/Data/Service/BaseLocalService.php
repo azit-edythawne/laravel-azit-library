@@ -4,9 +4,11 @@ namespace Azit\Ddd\Arch\Data\Service;
 
 use Azit\Ddd\Arch\Domains\UseCases\BaseIterator;
 
-abstract class BaseLocalService implements CallbackService {
+abstract class BaseLocalService {
 
     protected BaseIterator $iterator;
+
+    abstract function execute() : void;
 
     /**
      * Constructor
