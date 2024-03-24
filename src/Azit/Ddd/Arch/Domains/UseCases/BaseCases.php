@@ -62,8 +62,8 @@ abstract class BaseCases {
     }
 
     /**
+     * Agregar valor a la variable attributes
      * @param array|null $attributes
-     * @deprecated Este metodo esta obsoleto, aunque puede ser utilizado aun
      */
     protected function setAttributes(?array $attributes): void {
         $this -> attributes = $attributes;
@@ -80,7 +80,6 @@ abstract class BaseCases {
     }
 
     /**
-     * @deprecated
      * Retorna la respuesta
      * @param string $message
      * @param mixed $data
@@ -96,7 +95,7 @@ abstract class BaseCases {
      * Obtiene la respuesta
      * @return BaseResponse
      */
-    protected function getResponse() : BaseResponse {
+    public function getResponse() : BaseResponse {
         return $this -> resource;
     }
 

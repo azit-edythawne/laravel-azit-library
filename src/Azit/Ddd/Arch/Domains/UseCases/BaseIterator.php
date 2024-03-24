@@ -6,6 +6,6 @@ interface BaseIterator {
 
     function transform() : string|array;
 
-    function getResult(mixed $out);
+    function feedback(mixed $out);
 
 }
