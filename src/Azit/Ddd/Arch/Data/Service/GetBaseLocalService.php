@@ -11,7 +11,7 @@ abstract class GetBaseLocalService extends BaseLocalService {
 
     protected GetPaginatedIterator $paginated;
 
-    public function __construct(BaseIterator $iterator, GetPaginatedIterator $class){
+    public function __construct(BaseIterator $iterator){
         parent::__construct($iterator);
     }
 
@@ -21,7 +21,7 @@ abstract class GetBaseLocalService extends BaseLocalService {
 
 
     public function getPaginated(?array $filters = null, int $limit = ValueConstant::DEFAULT_LIMIT) : array {
-        $pages = collect($this->paginated->setPaginated($filters, $limit) -> toArray());
+        $pages = collect($this -> paginated -> setPaginated($filters, $limit) -> toArray());
 
         return [
             PageConstant::PAGINATION_KEY_DATA => $pages -> pull(PageConstant::PAGINATION_KEY_DATA, []),
@@ -29,8 +29,6 @@ abstract class GetBaseLocalService extends BaseLocalService {
         ];
     }
 
-    function execute(): void {
-
-    }
+    abstract function execute(): void;
 
 }
