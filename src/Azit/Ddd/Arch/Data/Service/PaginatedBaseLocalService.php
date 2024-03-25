@@ -28,7 +28,7 @@ abstract class PaginatedBaseLocalService extends BaseLocalService {
      * @param int $limit
      * @return void
      */
-    protected function requiredPagination(GetPaginatedIterator $class, ?array $filters = null, int $limit = ValueConstant::DEFAULT_LIMIT) : void {
+    public function requiredPagination(GetPaginatedIterator $class, ?array $filters = null, int $limit = ValueConstant::DEFAULT_LIMIT) : void {
         $this -> limit = $limit;
         $this -> filters = $filters;
         $this -> paginated = $class;
