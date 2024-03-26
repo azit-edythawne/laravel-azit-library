@@ -6,7 +6,7 @@ use Illuminate\Support\Collection;
 
 interface BaseIterator {
 
-    function transform() : string|array|Collection;
+    function transform() : int|string|array|Collection;
 
     function feedback(mixed $out);
 
