@@ -1,8 +1,7 @@
 <?php
 
-namespace src;
+namespace Azit\Ddd;
 
-use Closure;
 use Illuminate\Support\ServiceProvider;
 
 class AzitProvider extends ServiceProvider {
