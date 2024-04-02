@@ -5,7 +5,7 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Azit\\Ddd\\": "src/Azit/Ddd"
+            "Azit\\Ddd\\": "src/"
         }
     },
     "authors": [
@@ -19,5 +19,10 @@
         "laravel/framework": "^v11.0.7",
         "guzzlehttp/guzzle": "^7.8.1",
         "maatwebsite/excel": "^3.1"
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "php artisan vendor:publish --tag=config --provider=Azit\\Ddd\\AzitProvider"
+        ]
     }
 }

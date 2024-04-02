@@ -2,7 +2,6 @@
 
 namespace Azit\Ddd\Arch\Data\Network;
 
-use Azit\Ddd\Arch\Constant\SGUConstant;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
@@ -37,7 +36,7 @@ abstract class SguRepository extends NetworkRepository {
      * @throws GuzzleException
      */
     public function auth(string $keyApp, string $ssid) : ?array {
-        $url = Str::replace('%s', $keyApp, SGUConstant::URL_SGU);
+        $url = Str::replace('%s', $keyApp, config('library.url_sgu'));
         return $this -> sguRequest(NetworkRepository::GET, $url, [ 'auth' => $ssid ]);
     }
 
@@ -48,7 +47,7 @@ abstract class SguRepository extends NetworkRepository {
      * @throws GuzzleException
      */
     public function logout(string $ssid) : ?array {
-        return  $this -> sguRequest(NetworkRepository::POST, SGUConstant::URL_SGU_LOGOUT, [ 'auth' => $ssid]);
+        return  $this -> sguRequest(NetworkRepository::POST, config('library.url_sgu_logout'), [ 'auth' => $ssid]);
     }
 
     /**
@@ -60,7 +59,7 @@ abstract class SguRepository extends NetworkRepository {
      * @throws GuzzleException
      */
     public function searchPerson(string $keyApp, string $filter, string $value) : ?array {
-        $url = Str::replaceArray('%s', [$keyApp, $filter, $value], SGUConstant::URL_SGU_BY_PERSON);
+        $url = Str::replaceArray('%s', [$keyApp, $filter, $value], config('library.url_sgu_by_person'));
         return $this -> sguRequest(NetworkRepository::GET, $url, []);
     }
 
@@ -72,7 +71,7 @@ abstract class SguRepository extends NetworkRepository {
      * @throws GuzzleException
      */
     public function searchCtt(string $keyApp, string $cct) : ?array {
-        $url = Str::replaceArray('%s', [$keyApp, $cct], SGUConstant::URL_SGU_BY_CTT);
+        $url = Str::replaceArray('%s', [$keyApp, $cct], config('library.url_sgu_cct'));
         $data = $this -> sguRequest(NetworkRepository::GET, $url, []);
 
         if (Arr::has($data, 'schema')) {

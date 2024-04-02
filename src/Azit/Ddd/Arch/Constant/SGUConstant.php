@@ -13,8 +13,4 @@ class SGUConstant {
     public const ARG_MAIL = 'usuario';
     public const ARG_CCT = 'cct';
 
-    public static function getText() : string {
-        return config('library.url_sgu');
-    }
-
 }
