@@ -13,4 +13,13 @@ class SGUConstant {
     public const ARG_MAIL = 'usuario';
     public const ARG_CCT = 'cct';
 
+
+    /**
+     * Test de la clase
+     * @return mixed
+     */
+    public static function getTest() : mixed {
+        return config('library');
+    }
+
 }
