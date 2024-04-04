@@ -16,8 +16,15 @@ class BaseBuilder {
     public const ORDER_ASC = 'asc';
     public const ORDER_DESC = 'desc';
 
-    private const QUERY_INLINE = 1;
-    private const QUERY_NESTED = 2;
+    /**
+     * @deprecated  se recomienda usar TYPE_WHERE
+     */
+    public const QUERY_INLINE = 1;
+
+    /**
+     * @deprecated  se recomienda usar TYPE_WHERE_FN
+     */
+    public const QUERY_NESTED = 2;
 
     public const TYPE_WHERE = 1;
     public const TYPE_WHERE_FN = 2;
@@ -68,6 +75,23 @@ class BaseBuilder {
      */
     public function addRelations(array $relations = []) : BaseBuilder {
         $this -> builder -> with($relations);
+        return $this;
+    }
+
+    /**
+     * Base Query
+     * @deprecated
+     * @param array $relations
+     * @param int|null $id
+     * @return $this
+     */
+    public function baseQuery(array $relations = [], int $id = null) : BaseBuilder {
+        $this -> builder -> with($relations);
+
+        if (isset($id)) {
+            $this -> builder -> where('id', $id) -> take(1);
+        }
+
         return $this;
     }
 
@@ -171,6 +195,18 @@ class BaseBuilder {
         }
 
         return $this -> builder -> get() -> toArray();
+    }
+
+
+    /**
+     * Filtro
+     * @deprecated
+     * @param array|null $filters
+     * @return $this
+     */
+    public function setFilter(array $filters = null) : BaseBuilder {
+        $this -> addMultiQueries($filters);
+        return $this;
     }
 
     /**
