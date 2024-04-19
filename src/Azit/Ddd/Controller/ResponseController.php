@@ -3,6 +3,7 @@
 namespace Azit\Ddd\Controller;
 
 use Azit\Ddd\Arch\Domains\Response\BaseResponse;
+use Azit\Ddd\Arch\Domains\Response\StorageResponse;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -15,11 +16,36 @@ abstract class ResponseController extends Controller {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
     /**
+     * Construye json respuesta al front
+     * @param BaseResponse $resource
+     * @return JsonResponse|BinaryFileResponse
+     */
+    protected function getResponse(BaseResponse $resource) : JsonResponse|BinaryFileResponse {
+        // Se utiliza para descargar archivos desde un hilo
+        if ($resource instanceof StorageResponse) {
+            return $this -> getResponseDocument($resource);
+        }
+
+        $data = $resource -> getData();
+        $message = $resource -> getMessage();
+        return $this -> getResponseData($message, $data);
+    }
+
+    /**
      * Respuesta de documentos
      * @param BaseResponse $response
      * @return JsonResponse|BinaryFileResponse
      */
-    protected abstract function getResponseDocument(BaseResponse $response) : JsonResponse|BinaryFileResponse;
+    protected function getResponseDocument(BaseResponse $response): JsonResponse|BinaryFileResponse {
+        $data = $response -> getData();
+        $message = $response -> getMessage();
+
+        if (!isset($data)){
+            return $this -> getResponseData($message, $data);
+        }
+
+        return response() -> download($data) -> deleteFileAfterSend();
+    }
 
     /**
      *  Respuesta de datos
