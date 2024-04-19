@@ -10,7 +10,7 @@ class StorageRepository extends NetworkRepository {
 
 
     public function getUrl(string $segment): string {
-        return config('storage-external.storage-external') . $segment;
+        return config('library.storage.uri') . $segment;
     }
 
     /**

@@ -19,7 +19,7 @@ class CreateAttachment extends BaseCases {
     public function of() : BaseResponse {
         $file = $this -> getAttachment('files');
         $uuid = $this -> getStringValue('uuid');
-        $path = $this -> repository -> save(config('storage-external.root'), $uuid, $file);
+        $path = $this -> repository -> save(config('library.storage.root'), $uuid, $file);
         return  $this -> setResponse(MessageConstant::ACTION_MAKE, $path);
     }
 
