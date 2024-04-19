@@ -3,7 +3,7 @@
 return [
     'storage' => [
         'root' => env('APP_STORAGE_ROOT'),
-        'uri' => env('APP_STORAGE_URL'),
+        'uri' => env('APP_STORAGE_UR'),
         'base_path' => env('APP_OWNER_BASE_GET_STORAGE')
     ],
     'url_sgu' => env('SGU_LOGIN', 'http://201.163.59.107:7099/persona/v2/persona?llaveApp=%s'),
