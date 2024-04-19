@@ -5,11 +5,13 @@ namespace Azit\Ddd\Arch\Domains\UseCases;
 use Azit\Ddd\Arch\Constant\ValueConstant;
 use Azit\Ddd\Arch\Domains\Builder\FilterCreateBuilder;
 use Azit\Ddd\Arch\Domains\Response\BaseResponse;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use InvalidArgumentException;
 
 abstract class BaseCases {
 
@@ -112,6 +114,22 @@ abstract class BaseCases {
      */
     protected function hasKey(string $key) : bool {
         return Arr::has($this -> attributes, $key);
+    }
+
+    /**
+     * Obtiene un valor booleano
+     * En caso de que el valor no sea un boleano se genera un error InvalidArgumentException
+     * @param string $key
+     * @return bool
+     */
+    protected function getBooleanValue(string $key) : bool {
+        $value = filter_var(Arr::get($this -> attributes, $key), FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+
+        if ($value === null) {
+            throw new InvalidArgumentException('La variable no puede convertirse a booleano');
+        }
+
+        return $value;
     }
 
     /**
