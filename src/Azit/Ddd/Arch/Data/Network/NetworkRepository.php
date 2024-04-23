@@ -97,28 +97,25 @@ abstract class NetworkRepository {
      */
     protected function setPostAttachmentHttp(string $url, array $data, UploadedFile|array $files, string $filename = null, array $headers = []) {
         try {
-            $response = null;
+            $response = Http::withHeaders($headers);
 
             if (is_array($files)) {
-                $formData = [];
-
-                // Agregar los datos al FormData
-                foreach ($data as $key => $value) {
-                    $formData[$key] = $value;
-                }
-
-                foreach ($files as $key => $file) {
+                foreach ($files as $file) {
                     if ($file instanceof UploadedFile) {
-                        $formData["files[$key]"] = $file;
+                        $response -> attach(
+                            'files[]',
+                            file_get_contents($file->getRealPath()),
+                            $file->getClientOriginalName()
+                        );
                     }
                 }
-
-                $response = Http::withHeaders($headers) -> attach($formData) -> post($url);
             }
 
             if (!is_array($files)) {
-                $response = Http::withHeaders($headers) -> attach('file', file_get_contents($files), $filename) -> post($url);
+                $response -> attach('file', file_get_contents($files), $filename);
             }
+
+            $response = $response -> post($url, $data);
 
             if ($response -> status() == Response::HTTP_OK) {
                 return $response -> object() -> data;
