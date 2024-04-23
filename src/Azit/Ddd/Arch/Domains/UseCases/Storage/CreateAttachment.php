@@ -23,6 +23,13 @@ class CreateAttachment extends BaseCases {
         return  $this -> setResponse(MessageConstant::ACTION_MAKE, $path);
     }
 
+    public function multi() : BaseResponse {
+        $files = $this -> attributes['files'];
+        $uuid = $this -> getStringValue('uuid');
+        $path = $this -> repository -> multiSave(config('library.storage.root'), $uuid, $files);
+        return  $this -> setResponse(MessageConstant::ACTION_MAKE, $path);
+    }
+
     public function rewrite() : BaseResponse {
         $file = $this -> getAttachment('file');
         $pathOld = $this -> getStringValue('path_old');

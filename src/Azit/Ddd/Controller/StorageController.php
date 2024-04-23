@@ -19,6 +19,12 @@ class StorageController extends ResponseController {
         return $this -> getResponse($response);
     }
 
+    public function multiStore(Request $args) {
+        $this -> request -> setRequest($args);
+        $response = $this -> request -> multiStore();
+        return $this -> getResponse($response);
+    }
+
     public function replace(Request $args){
         $this -> request -> setRequest($args);
         $response = $this -> request -> replace();

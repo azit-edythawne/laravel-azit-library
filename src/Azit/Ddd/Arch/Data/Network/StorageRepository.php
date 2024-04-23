@@ -24,11 +24,28 @@ class StorageRepository extends NetworkRepository {
         try {
             $filename = $file -> getClientOriginalName();
 
-            return $this -> setPostAttachmentHttp($this -> getUrl('/upload'), $filename, [
+            return $this -> setPostAttachmentHttp($this -> getUrl('/upload'), [
                 'filename' => $filename,
                 'folder' => "$folder/$idRequest/",
-            ], $file);
+            ], $file, $filename);
 
+        } catch (Exception $exception) {
+            return null;
+        }
+    }
+
+    /**
+     * Permite guardar un archivo
+     * @param string $folder
+     * @param string $idRequest
+     * @param UploadedFile[] $files
+     * @return null
+     */
+    public function multiSave(string $folder, string $idRequest, array $files) {
+        try {
+            return $this -> setPostAttachmentHttp($this -> getUrl('/uploads'), [
+                'folder' => "$folder/$idRequest/",
+            ], $files);
         } catch (Exception $exception) {
             return null;
         }

@@ -27,12 +27,22 @@ class StorageRequest extends BaseRequest {
         $this -> applyRules([
             'uuid' => 'required|uuid',
             'files' => 'required|array|min:1',
-            'files.*.filename' => 'required|string',
-            'files.*.file' => [ 'required', $this -> filesAllows() ],
+            'files.*' => [ 'required', $this -> filesAllows() ],
         ]);
 
         $this -> createCase -> setRequest($this->getRequest());
         return $this -> createCase -> of();
+    }
+
+    public function multiStore() : BaseResponse {
+        $this -> applyRules([
+            'uuid' => 'required|uuid',
+            'files' => 'required|array|min:1',
+            'files.*' => [ 'required', 'file', $this -> filesAllows() ],
+        ]);
+
+        $this -> createCase -> setRequest($this->getRequest());
+        return $this -> createCase -> multi();
     }
 
     /**

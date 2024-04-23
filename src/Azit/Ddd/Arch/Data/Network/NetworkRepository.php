@@ -89,15 +89,36 @@ abstract class NetworkRepository {
     /**
      * Permite subir archivos atraves de HttpClient y post
      * @param string $url
-     * @param string $filename
      * @param array $data
-     * @param UploadedFile $file
+     * @param UploadedFile|array $files
      * @param array $headers
+     * @param string|null $filename
      * @return null
      */
-    protected function setPostAttachmentHttp(string $url, string $filename, array $data, UploadedFile $file, array $headers = []) {
+    protected function setPostAttachmentHttp(string $url, array $data, UploadedFile|array $files, string $filename = null, array $headers = []) {
         try {
-            $response = Http::withHeaders($headers) -> attach('file', file_get_contents($file), $filename) -> post($url, $data);
+            $response = null;
+
+            if (is_array($files)) {
+                $formData = [];
+
+                // Agregar los datos al FormData
+                foreach ($data as $key => $value) {
+                    $formData[$key] = $value;
+                }
+
+                foreach ($files as $key => $file) {
+                    if ($file instanceof UploadedFile) {
+                        $formData["files[$key]"] = $file;
+                    }
+                }
+
+                $response = Http::withHeaders($headers) -> attach($formData) -> post($url);
+            }
+
+            if (!is_array($files)) {
+                $response = Http::withHeaders($headers) -> attach('file', file_get_contents($files), $filename) -> post($url);
+            }
 
             if ($response -> status() == Response::HTTP_OK) {
                 return $response -> object() -> data;
