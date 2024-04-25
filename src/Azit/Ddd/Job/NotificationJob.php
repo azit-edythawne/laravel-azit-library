@@ -9,6 +9,7 @@ use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
@@ -38,7 +39,7 @@ use Illuminate\Support\Collection;
  *
  * Nota 3:
  * Para convertir un Modelo a builder aplicar lo siguiente :
- * Notification::newQuery()
+ * Notification::getModel() -> newQuery()
  */
 class NotificationJob implements ShouldQueue, BaseIterator {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
@@ -54,8 +55,8 @@ class NotificationJob implements ShouldQueue, BaseIterator {
 
     /**
      * Creacion de notificaciones por array de roles
-     * @param Builder $base
-     * @param Builder $notification
+     * @param Model $base
+     * @param Model $notification
      * @param int $idNotification
      * @param AuthEntity $user
      * @param array $args
@@ -63,9 +64,9 @@ class NotificationJob implements ShouldQueue, BaseIterator {
      * @param mixed $roles
      * @return void
      */
-    public static function byRoles(Builder $base, Builder $notification, int $idNotification, AuthEntity $user, array $args, mixed $idRequest, mixed $roles){
+    public static function byRoles(Model $base, Model $notification, int $idNotification, AuthEntity $user, array $args, mixed $idRequest, mixed $roles){
         try {
-            NotificationJob::dispatch($idNotification, $user, $args, $idRequest, $roles);
+            NotificationJob::dispatch($base -> newQuery(), $notification -> newQuery(), $idNotification, $user, $args, $idRequest, $roles);
         } catch (Exception $exception) {
 
         }
@@ -73,8 +74,8 @@ class NotificationJob implements ShouldQueue, BaseIterator {
 
     /**
      * Creaciion de notificaciones por id de usuario
-     * @param Builder $base
-     * @param Builder $notification
+     * @param Model $base
+     * @param Model $notification
      * @param int $idNotification
      * @param AuthEntity $user
      * @param array $args
@@ -82,9 +83,9 @@ class NotificationJob implements ShouldQueue, BaseIterator {
      * @param int $idReceiver
      * @return void
      */
-    public static function byUser(Builder $base, Builder $notification, int $idNotification, AuthEntity $user, array $args, mixed $idRequest, int $idReceiver){
+    public static function byUser(Model $base, Model $notification, int $idNotification, AuthEntity $user, array $args, mixed $idRequest, int $idReceiver){
         try {
-            NotificationJob::dispatch($idNotification, $user, $args, $idRequest, null, $idReceiver);
+            NotificationJob::dispatch($base -> newQuery(), $notification -> newQuery(), $idNotification, $user, $args, $idRequest, null, $idReceiver);
         } catch (Exception $exception) {
 
         }
