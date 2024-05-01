@@ -6,7 +6,7 @@ use Azit\Ddd\Arch\Domains\UseCases\BaseIterator;
 
 abstract class BaseLocalService {
 
-    protected BaseIterator $iterator;
+    protected ?BaseIterator $iterator;
 
     abstract function execute() : void;
 

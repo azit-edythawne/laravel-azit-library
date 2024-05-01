@@ -43,6 +43,20 @@ abstract class AuthEntity {
     }
 
     /**
+     * Obtiene el nombre del usuario actual
+     * @param string $nameColumn
+     * @param string $lastNameColumn
+     * @return string
+     */
+    public function getUserName(string $nameColumn = 'name', string $lastNameColumn = 'last_name') : string {
+        try {
+            return Arr::get($this -> attributes, $nameColumn).' '.Arr::get($this -> attributes, $lastNameColumn, '');
+        } catch (\Exception $exception) {
+            return 'S/N';
+        }
+    }
+
+    /**
      * Valida si el usuario actual tiene roles especificos
      * @param bool $requireAll
      * @param ...$roles
