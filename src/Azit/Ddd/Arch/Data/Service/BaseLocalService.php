@@ -12,9 +12,9 @@ abstract class BaseLocalService {
 
     /**
      * Constructor
-     * @param BaseIterator $iterator
+     * @param BaseIterator|null $iterator
      */
-    public function __construct(BaseIterator $iterator){
+    public function __construct(?BaseIterator $iterator = null){
         $this -> iterator = $iterator;
     }
 
