@@ -11,6 +11,8 @@ abstract class PaginatedBaseLocalService extends BaseLocalService {
 
     private int $limit;
     private ?array $filters;
+    private string $orderColumn;
+    private string $orderBy;
     private GetPaginatedIterator $paginated;
 
     /**
@@ -33,11 +35,15 @@ abstract class PaginatedBaseLocalService extends BaseLocalService {
     /**
      * @param array|null $filters
      * @param int $limit
+     * @param string $orderBy
+     * @param string $orderColumn
      * @return void
      */
-    public function set(?array $filters = null, int $limit = ValueConstant::DEFAULT_LIMIT) : void {
+    public function set(?array $filters = null, int $limit = ValueConstant::DEFAULT_LIMIT, string $orderBy = 'desc', string $orderColumn = 'id') : void {
         $this -> limit = $limit;
         $this -> filters = $filters;
+        $this -> orderBy = $orderBy;
+        $this -> orderColumn = $orderColumn;
     }
 
     /**
@@ -45,7 +51,7 @@ abstract class PaginatedBaseLocalService extends BaseLocalService {
      * @return void
      */
     public function execute() : void {
-        $pages = collect($this -> paginated -> setPaginated($this -> filters, $this -> limit) -> toArray());
+        $pages = collect($this -> paginated -> setPaginated($this -> filters, $this -> limit, $this -> orderBy, $this -> orderColumn) -> toArray());
 
         $this -> iterator -> feedback([
             PageConstant::PAGINATION_KEY_DATA => $pages -> pull(PageConstant::PAGINATION_KEY_DATA, []),

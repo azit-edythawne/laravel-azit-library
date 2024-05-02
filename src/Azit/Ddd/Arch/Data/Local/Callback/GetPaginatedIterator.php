@@ -7,6 +7,6 @@ use Illuminate\Pagination\AbstractPaginator;
 
 interface GetPaginatedIterator {
 
-    public function setPaginated(?array $filters = null, int $limit = ValueConstant::DEFAULT_LIMIT) : AbstractPaginator;
+    public function setPaginated(?array $filters = null, int $limit = ValueConstant::DEFAULT_LIMIT, string $orderBy = 'desc', string $orderColumn = 'id')  : AbstractPaginator;
 
 }

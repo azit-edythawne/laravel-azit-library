@@ -177,10 +177,12 @@ class BaseBuilder {
     /**
      * Obtiene paginador
      * @param int $perPage
+     * @param string $column
+     * @param string $direction
      * @return AbstractPaginator
      */
-    public function getPaginate(int $perPage = PageConstant::ROWS_PER_PAGE) : AbstractPaginator {
-        return $this -> builder -> paginate($perPage) -> withQueryString();
+    public function getPaginate(int $perPage = PageConstant::ROWS_PER_PAGE, string $column = 'id', string $direction = self::ORDER_DESC) : AbstractPaginator {
+        return $this -> builder -> orderBy($column, $direction) ->  paginate($perPage) -> withQueryString();
     }
 
      /**
