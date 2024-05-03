@@ -4,6 +4,7 @@ namespace Azit\Ddd\Arch\Data\Service;
 
 use Azit\Ddd\Arch\Constant\PageConstant;
 use Azit\Ddd\Arch\Constant\ValueConstant;
+use Azit\Ddd\Arch\Data\Local\Callback\GetOrderPaginatedIterator;
 use Azit\Ddd\Arch\Data\Local\Callback\GetPaginatedIterator;
 use Azit\Ddd\Arch\Domains\UseCases\BaseIterator;
 
@@ -13,7 +14,9 @@ abstract class PaginatedBaseLocalService extends BaseLocalService {
     private ?array $filters;
     private string $orderColumn;
     private string $orderBy;
-    private GetPaginatedIterator $paginated;
+    private ?GetPaginatedIterator $paginated;
+    private ?GetOrderPaginatedIterator $orderPaginated;
+
 
     /**
      * Constructor
@@ -30,6 +33,17 @@ abstract class PaginatedBaseLocalService extends BaseLocalService {
      */
     protected function requiredPagination(GetPaginatedIterator $class) : void {
         $this -> paginated = $class;
+        $this -> orderPaginated = null;
+    }
+
+    /**
+     * Requiere paginador con orden en columna especifica
+     * @param GetOrderPaginatedIterator $class
+     * @return void
+     */
+    protected function requiredOrderPagination(GetOrderPaginatedIterator $class) : void {
+        $this -> paginated = null;
+        $this -> orderPaginated = $class;
     }
 
     /**
@@ -51,7 +65,15 @@ abstract class PaginatedBaseLocalService extends BaseLocalService {
      * @return void
      */
     public function execute() : void {
-        $pages = collect($this -> paginated -> setPaginated($this -> filters, $this -> limit, $this -> orderBy, $this -> orderColumn) -> toArray());
+        $pages = [];
+
+        if ($this -> paginated != null) {
+            $pages = collect($this -> paginated -> setPaginated($this -> filters, $this -> limit) -> toArray());
+        }
+
+        if ($this -> orderPaginated != null) {
+            $pages = collect($this -> orderPaginated -> setPaginated($this -> filters, $this -> limit, $this -> orderBy, $this -> orderColumn) -> toArray());
+        }
 
         $this -> iterator -> feedback([
             PageConstant::PAGINATION_KEY_DATA => $pages -> pull(PageConstant::PAGINATION_KEY_DATA, []),
