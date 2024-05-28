@@ -19,6 +19,7 @@ class FilterCreateBuilder {
 
     public const OPERATOR_ILIKE = 'ilike';
 
+
     /**
      * Constructor
      * @param array $attributes
