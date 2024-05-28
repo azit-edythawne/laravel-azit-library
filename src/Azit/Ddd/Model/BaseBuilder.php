@@ -32,6 +32,8 @@ class BaseBuilder {
 
     public const OP_IN = 'In';
     public const OP_IN_NOT = 'NotIn';
+    public const OP_WH_NULL = 'Null';
+    public const OP_WH_NOT_NULL = 'NotNull';
 
     public const OP_ILIKE = 'ilike';
     public const OP_EQUAL = '=';
@@ -323,6 +325,10 @@ class BaseBuilder {
 
             if ($operator == self::OP_RAW) {
                 $builder -> whereRaw($column[0], $column[2], $column[3]);
+            }
+
+            if ($operator == self::OP_WH_NULL || $operator == self::OP_WH_NOT_NULL) {
+                $builder -> whereNull($column[0], $column[3], ($operator == self::OP_WH_NOT_NULL));
             }
 
             if ($operator != self::OP_IN && $operator != self::OP_IN_NOT && $operator != self::OP_RAW) {

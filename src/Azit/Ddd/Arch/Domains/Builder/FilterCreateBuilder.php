@@ -148,8 +148,8 @@ class FilterCreateBuilder {
      * @param string $logic
      * @return void
      */
-    public function addColumnRaw(string $columnRaw, array $bindings = null, string $logic = BaseBuilderCompact::AND){
-        $this -> columns -> add([$columnRaw, BaseBuilderCompact::OP_RAW, $bindings, $logic]);
+    public function addColumnRaw(string $columnRaw, array $bindings = null, string $logic = BaseBuilder::AND){
+        $this -> columns -> add([$columnRaw, BaseBuilder::OP_RAW, $bindings, $logic]);
     }
 
     /**
