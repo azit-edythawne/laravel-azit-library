@@ -127,8 +127,10 @@ class FilterCreateBuilder {
     public function addColumn(string $column, string $keyValue = null, string $operator = '=', string $logic = BaseBuilder::AND, mixed $defaultValue = null) {
         $isKeyExists =  Arr::exists($this -> attributes, $keyValue);
 
-        if (!$isKeyExists && !isset($defaultValue)){
-            return;
+        if ($operator != BaseBuilder::OP_WH_NOT_NULL || $operator != BaseBuilder::OP_WH_NULL) {
+            if (!$isKeyExists && !isset($defaultValue)){
+                return;
+            }
         }
 
         $value = $isKeyExists ? Arr::get($this -> attributes, $keyValue) : $defaultValue;

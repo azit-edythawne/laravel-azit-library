@@ -319,29 +319,14 @@ class BaseBuilder {
         foreach ($columns as $column) {
             $operator = $column[1];
 
-            if ($operator == self::OP_IN){
-                $builder -> whereIn($column[0], $column[2], $column[3]);
-            }
-
-            if ($operator == self::OP_IN_NOT) {
-                $builder -> whereIn($column[0], $column[2], $column[3], true);
-            }
-
-            if ($operator == self::OP_RAW) {
-                $builder -> whereRaw($column[0], $column[2], $column[3]);
-            }
-
-            if ($operator == self::OP_WH_NULL || $operator == self::OP_WH_NOT_NULL) {
-                $builder -> whereNull($column[0], $column[3], ($operator == self::OP_WH_NOT_NULL));
-            }
-
-            if ($operator == self::OP_DATE) {
-                $builder -> whereDate($column[0], $column[1], $column[2], $column[3]);
-            }
-
-            if ($operator != self::OP_IN && $operator != self::OP_IN_NOT && $operator != self::OP_RAW) {
-                $builder -> where($column[0], $column[1], $column[2], $column[3]);
-            }
+            match ($operator) {
+                self::OP_IN => $builder -> whereIn($column[0], $column[2], $column[3]),
+                self::OP_IN_NOT => $builder -> whereIn($column[0], $column[2], $column[3], true),
+                self::OP_RAW => $builder -> whereRaw($column[0], $column[2], $column[3]),
+                self::OP_WH_NULL || $operator == self::OP_WH_NOT_NULL => $builder -> whereNull($column[0], $column[3], ($operator == self::OP_WH_NOT_NULL)),
+                self::OP_DATE => $builder -> whereDate($column[0], $column[1], $column[2], $column[3]),
+                default =>  $builder -> where($column[0], $column[1], $column[2], $column[3])
+            };
         }
 
         if (isset($selects)){
