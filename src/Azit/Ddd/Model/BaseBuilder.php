@@ -323,7 +323,7 @@ class BaseBuilder {
                 self::OP_IN => $builder -> whereIn($column[0], $column[2], $column[3]),
                 self::OP_IN_NOT => $builder -> whereIn($column[0], $column[2], $column[3], true),
                 self::OP_RAW => $builder -> whereRaw($column[0], $column[2], $column[3]),
-                self::OP_WH_NULL || $operator == self::OP_WH_NOT_NULL => $builder -> whereNull($column[0], $column[3], ($operator == self::OP_WH_NOT_NULL)),
+                self::OP_WH_NULL, self::OP_WH_NOT_NULL => $builder -> whereNull($column[0], $column[3], ($operator == self::OP_WH_NOT_NULL)),
                 self::OP_DATE => $builder -> whereDate($column[0], $column[1], $column[2], $column[3]),
                 default =>  $builder -> where($column[0], $column[1], $column[2], $column[3])
             };
