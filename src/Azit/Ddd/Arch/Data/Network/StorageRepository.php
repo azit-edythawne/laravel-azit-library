@@ -61,9 +61,9 @@ class StorageRepository extends NetworkRepository {
         try {
             $filename = $file -> getClientOriginalName();
 
-            return $this -> setPostAttachmentHttp($this -> getUrl('/upload-replace-old'), $filename, [
+            return $this -> setPostAttachmentHttp($this -> getUrl('/upload-replace-old'), [
                 'path_old' => $path,
-            ], $file);
+            ], $file, $filename);
         } catch (Exception $exception) {
             return null;
         }

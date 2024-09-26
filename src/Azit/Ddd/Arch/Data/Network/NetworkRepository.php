@@ -91,8 +91,8 @@ abstract class NetworkRepository {
      * @param string $url
      * @param array $data
      * @param UploadedFile|array $files
-     * @param array $headers
      * @param string|null $filename
+     * @param array $headers
      * @return null
      */
     protected function setPostAttachmentHttp(string $url, array $data, UploadedFile|array $files, string $filename = null, array $headers = []) {
